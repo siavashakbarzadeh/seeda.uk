@@ -496,27 +496,80 @@
             </div>
           </div>
         </div>
-        <form class="contact-form fade-in" id="contactForm" onsubmit="handleSubmit(event)">
-          <div class="form-row">
-            <div class="form-group">
-              <label for="name">Full Name</label>
-              <input type="text" id="name" placeholder="John Doe" required />
+        <div class="faq-list fade-in">
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              <span>How long does a typical project take?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                <p>Timelines vary based on scope. A simple website takes 2–4 weeks, while complex web apps or mobile
+                  applications can take 2–4 months. We always provide a detailed timeline before starting.</p>
+              </div>
             </div>
-            <div class="form-group">
-              <label for="email">Email Address</label>
-              <input type="email" id="email" placeholder="john@example.com" required />
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              <span>What technologies do you specialize in?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                <p>We work with React, Next.js, Vue.js, Flutter, React Native, Node.js, Python, AWS, Google Cloud,
+                  Docker, and more. We choose the best stack based on your project's needs.</p>
+              </div>
             </div>
           </div>
-          <div class="form-group">
-            <label for="subject">Subject</label>
-            <input type="text" id="subject" placeholder="Project Discussion" required />
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              <span>Do you offer ongoing support after launch?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                <p>Absolutely! We offer flexible maintenance plans including bug fixes, feature updates, performance
+                  monitoring, and 24/7 technical support to keep your product running smoothly.</p>
+              </div>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="message">Message</label>
-            <textarea id="message" placeholder="Tell us about your project..." required></textarea>
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              <span>How much does a project cost?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                <p>Every project is unique. We provide free consultations and detailed quotes based on your
+                  requirements. Our pricing is transparent with no hidden fees — reach out to get a custom estimate.</p>
+              </div>
+            </div>
           </div>
-          <button type="submit" class="submit-btn">Send Message 🚀</button>
-        </form>
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              <span>Can you work with our existing team?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                <p>Yes! We frequently integrate with in-house teams. Whether you need full project delivery or
+                  additional developers to augment your team, we adapt to your workflow seamlessly.</p>
+              </div>
+            </div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-question" onclick="toggleFaq(this)">
+              <span>What is your development process?</span>
+              <span class="faq-icon">+</span>
+            </button>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                <p>We follow an agile methodology: Discovery → Design → Development → Testing → Launch → Support. You'll
+                  have full visibility with regular updates, demos, and direct communication throughout.</p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -611,24 +664,39 @@
       });
     }
 
-    // Contact form handler
-    function handleSubmit(e) {
-      e.preventDefault();
-      const btn = e.target.querySelector('.submit-btn');
-      btn.textContent = 'Sending...';
-      btn.style.opacity = '0.7';
+    // FAQ accordion toggle with smooth height animation
+    function toggleFaq(btn) {
+      const item = btn.parentElement;
+      const answer = item.querySelector('.faq-answer');
+      const isActive = item.classList.contains('active');
 
-      setTimeout(() => {
-        btn.textContent = 'Message Sent! ✅';
-        btn.style.opacity = '1';
-        btn.style.background = 'linear-gradient(135deg, #00cec9, #55efc4)';
-        e.target.reset();
+      // Close all items with animation
+      document.querySelectorAll('.faq-item.active').forEach(el => {
+        if (el !== item) {
+          const elAnswer = el.querySelector('.faq-answer');
+          elAnswer.style.height = elAnswer.scrollHeight + 'px';
+          requestAnimationFrame(() => {
+            elAnswer.style.height = '0';
+          });
+          el.classList.remove('active');
+        }
+      });
 
-        setTimeout(() => {
-          btn.textContent = 'Send Message 🚀';
-          btn.style.background = '';
-        }, 3000);
-      }, 1500);
+      // Toggle clicked item
+      if (!isActive) {
+        item.classList.add('active');
+        answer.style.height = answer.scrollHeight + 'px';
+        answer.addEventListener('transitionend', function handler() {
+          answer.style.height = 'auto';
+          answer.removeEventListener('transitionend', handler);
+        });
+      } else {
+        answer.style.height = answer.scrollHeight + 'px';
+        requestAnimationFrame(() => {
+          answer.style.height = '0';
+        });
+        item.classList.remove('active');
+      }
     }
 
     // Counter animation
